@@ -2,9 +2,11 @@ TwitchPlays
 ===========
 
 TwitchPlays reads chatinput from Twitch and simulates a keypress if the words defined in the config are typed. To run TwitchPlays, copy the latest verison from the /releases/ folder and run the following command:
+
 	java -classpath TwitchPlays_jar.jar TwitchPlays.Main
 
 The following configuration will be generated:
+
 	#You can generate a oauth here: http://twitchapps.com/tmi/ Make sure that it starts with oauth(oauth:[OAUTH])
 	[connection]
 	server = irc.twitch.tv
