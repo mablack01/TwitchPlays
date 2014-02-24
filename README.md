@@ -1,6 +1,7 @@
 TwitchPlays
 ===========
 
+Warning: This project is badly written and contains a lot of bad code. If you want to change something, please do so.
 TwitchPlays reads chatinput from Twitch and simulates a keypress if the words defined in the config are typed. To run TwitchPlays, copy the latest verison from the /releases/ folder and run the following command:
 
 	java -classpath TwitchPlays_jar.jar TwitchPlays.Main
