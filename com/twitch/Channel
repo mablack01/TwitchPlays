@@ -2,9 +2,17 @@ package com.twitch;
 
 public class Channel {
 
-  public Channel(String server, int port, string user, string channel, int oauth) {
+  public Channel(String server, int port, String user, String channel, int oauth) {
     this.SERVER = server;
     this.PORT = port;
+    this.USER = user;
+    this.CHANNEL = channel;
+    this.OAUTH = oauth;
+  }
+  
+  public Channel(String user, String channel, int oauth) {
+    this.SERVER = irc.twitch.tv;
+    this.PORT = 6667;
     this.USER = user;
     this.CHANNEL = channel;
     this.OAUTH = oauth;
