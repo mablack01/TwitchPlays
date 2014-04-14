@@ -1,0 +1,51 @@
+package com.twitch;
+
+public class Constants {
+
+  private String SERVER;
+  private int PORT;
+  private String USER;
+  private String CHANNEL;
+  private int OAUTH;
+  
+  public String getServer() {
+    return this.SERVER;
+  }
+  
+  public int getPort() {
+    return this.PORT;
+  }
+  
+  public String getUser() {
+    return this.USER;
+  }
+  
+  public String getChannel() {
+    return this.CHANNEL;
+  }
+  
+  public int getOAuth() {
+    return this.OAUTH;
+  }
+  
+  public void setServer(String s) {
+    return this.SERVER = s;
+  }
+  
+  public void setPort(int p) {
+    return this.PORT = p;
+  }
+  
+  public void setUser(String u) {
+    return this.USER = u;
+  }
+  
+  public void setChannel(String c) {
+    return this.CHANNEL = c;
+  }
+  
+  public void setOAuth(int o) {
+    return this.OAUTH = o;
+  }
+
+}
