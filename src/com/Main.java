@@ -1,30 +1,81 @@
 package com;
 
-import java.util.Scanner;
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
 
-public class Main {
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
+import javax.swing.JToolBar;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JMenu;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-  public static void main(String args[]) {
-    Scanner s = new Scanner(System.in);
-    System.out.println("Would you like to create a channel set up? (Yes/No)");
-    String creatingChannel = s.nextLine();
-    if (creatingChannel.equalsIgnoreCase("Yes")) {
-      System.out.println("We will now be creating a new channel.");
-      System.out.println("Are you not using the Twitch servers? (Yes/No)");
-      String notTwitch = s.nextLine();
-      System.out.println("Please enter your twitch username:");
-      String user = s.nextLine();
-      System.out.println("Please enter your twitch channel:");
-      String channel = s.nextLine();
-      System.out.println("To find your oauth, please follow the link: http://twitchapps.com/tmi/");
-      System.out.println("Please enter your oauth:");
-      int oauth = Integer.parseInt(s.nextLine());
-        if (notTwitch.equalsIgnoreCase("Yes")) {
-          //new Channel(
-        } else {
-          new Channel(user, channel, oauth);
-        }
-    }
-  }
+public class Main extends JFrame {
 
+	private JPanel contentPane;
+	private final Action action = new channelSettings();
+	private static Main frame = new Main();
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public Main() {
+		setTitle("Twitch Plays Client by Miles Black");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 629, 626);
+		
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
+		
+		JMenuItem mntmChannelSettings = new JMenuItem("Channel Settings");
+		mntmChannelSettings.setAction(action);
+		mnFile.add(mntmChannelSettings);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+	}
+
+	private class channelSettings extends AbstractAction {
+		
+		public channelSettings() {
+			putValue(NAME, "Channel Settings");
+			putValue(SHORT_DESCRIPTION, "Adjust your twitch channel settings.");
+		}
+		
+		public void actionPerformed(ActionEvent e) {
+			frame.setVisible(false);
+			Settings s = new Settings();
+		    s.setVisible(true);
+		}
+		
+	}
+	
 }
