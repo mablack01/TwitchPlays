@@ -1,6 +1,14 @@
 package com.twitch;
 
-public class Constants {
+public class Channel {
+
+  public Channel(String server, int port, string user, string channel, int oauth) {
+    this.SERVER = server;
+    this.PORT = port;
+    this.USER = user;
+    this.CHANNEL = channel;
+    this.OAUTH = oauth;
+  }
 
   private String SERVER;
   private int PORT;
