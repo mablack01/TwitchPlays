@@ -1,29 +1,15 @@
 package com;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.BoxLayout;
 import javax.swing.JRadioButton;
-
-import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
 import java.awt.Desktop;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 
-import javax.swing.JEditorPane;
 import javax.swing.JLabel;
-
-import com.jgoodies.forms.factories.DefaultComponentFactory;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -42,33 +28,30 @@ import java.net.URISyntaxException;
 
 import javax.swing.Action;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.ActionListener;
-
 public class Settings extends JFrame {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5600496626447407945L;
+	
 	private JTextField port;
 	private JTextField server;
 	private JTextField user;
 	private JTextField channel;
 	private JTextField oauth;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private final Action action = new oAuth();
-	private final Action action_1 = new saveProfile();
-	private final Action action_2 = new loadProfile();
-	private final Action action_3 = new Exit();
-	private static Settings frame = new Settings();
-	private final Action action_4 = new democracyMode();
-	private static boolean democracy;
+	
 	private static Channel twitch;
-	private final Action action_5 = new anarchyMode();
+	private static Settings frame = new Settings();
+	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private final Action grabAuth = new oAuth();
+	private final Action saveProfile = new SaveProfile();
+	private final Action loadProfile = new LoadProfile();
+	private final Action exit = new Exit();
+	private final Action democracyMode = new DemocracyMode();
+	private final Action anarchyMode = new AnarchyMode();
+	
+	private static boolean democracy;
 	
 	public static Channel getChannel() {
 		return twitch;
@@ -126,26 +109,26 @@ public class Settings extends JFrame {
 		oauth.setColumns(10);
 		
 		JButton btnFindOauth = new JButton("Find oAuth");
-		btnFindOauth.setAction(action);
+		btnFindOauth.setAction(grabAuth);
 		
 		JRadioButton rdbtnDemocracy = new JRadioButton("Democracy");
-		rdbtnDemocracy.setAction(action_4);
+		rdbtnDemocracy.setAction(democracyMode);
 		buttonGroup.add(rdbtnDemocracy);
 		
 		JRadioButton rdbtnAnarchy = new JRadioButton("Anarchy");
-		rdbtnAnarchy.setAction(action_5);
+		rdbtnAnarchy.setAction(anarchyMode);
 		buttonGroup.add(rdbtnAnarchy);
 		
 		JLabel lblChoseAGame = new JLabel("Chose a Game Mode:");
 		
 		JButton btnSaveSettings = new JButton("Load Settings");
-		btnSaveSettings.setAction(action_2);
+		btnSaveSettings.setAction(loadProfile);
 		
 		JButton btnLoadSettings = new JButton("Exit");
-		btnLoadSettings.setAction(action_3);
+		btnLoadSettings.setAction(exit);
 		
 		JButton btnCreateSettings = new JButton("Save Settings");
-		btnCreateSettings.setAction(action_1);
+		btnCreateSettings.setAction(saveProfile);
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -244,14 +227,14 @@ public class Settings extends JFrame {
 		
 	}
 	
-	private class saveProfile extends AbstractAction {
+	private class SaveProfile extends AbstractAction {
 		
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 6302203154105704959L;
 
-		public saveProfile() {
+		public SaveProfile() {
 			putValue(NAME, "Save Profile");
 			putValue(SHORT_DESCRIPTION, "Saves your channel profile to profile.ser");
 		}
@@ -269,14 +252,14 @@ public class Settings extends JFrame {
 		
 	}
 	
-	private class loadProfile extends AbstractAction {
+	private class LoadProfile extends AbstractAction {
 		
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 4590669890416091725L;
 
-		public loadProfile() {
+		public LoadProfile() {
 			putValue(NAME, "Load Profile");
 			putValue(SHORT_DESCRIPTION, "Loads the information from profile.ser");
 		}
@@ -327,14 +310,14 @@ public class Settings extends JFrame {
 		
 	}
 	
-	private class democracyMode extends AbstractAction {
+	private class DemocracyMode extends AbstractAction {
 		
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = -1462165668825952617L;
 
-		public democracyMode() {
+		public DemocracyMode() {
 			putValue(NAME, "Democracy");
 			putValue(SHORT_DESCRIPTION, "Chose the game mode Democracy.");
 		}
@@ -345,14 +328,14 @@ public class Settings extends JFrame {
 		
 	}
 	
-	private class anarchyMode extends AbstractAction {
+	private class AnarchyMode extends AbstractAction {
 		
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 9199147910725275622L;
 
-		public anarchyMode() {
+		public AnarchyMode() {
 			putValue(NAME, "Anarchy");
 			putValue(SHORT_DESCRIPTION, "Chose the game mode Anarchy.");
 		}

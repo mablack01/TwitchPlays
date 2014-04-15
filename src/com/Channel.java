@@ -7,67 +7,67 @@ public class Channel implements Serializable {
 	private static final long serialVersionUID = -8374238202673046429L;
 
 	public Channel(String server, int port, String user, String channel, String oauth, boolean democracy) {
-		this.SERVER = server;
-		this.PORT = port;
-		this.USER = user;
-		this.CHANNEL = channel;
-		this.OAUTH = oauth;
-		this.DEMOCRACY = democracy;
+		this.server = server;
+		this.port = port;
+		this.user = user;
+		this.channel = channel;
+		this.oauth = oauth;
+		this.democracy = democracy;
 	}
 
-	private String SERVER;
-	private int PORT;
-	private String USER;
-	private String CHANNEL;
-	private String OAUTH;
-	private boolean DEMOCRACY;
+	private String server;
+	private int port;
+	private String user;
+	private String channel;
+	private String oauth;
+	private boolean democracy;
 	  
 	public String getServer() {
-		return this.SERVER;
+		return this.server;
 	}
 	  
 	public int getPort() {
-		return this.PORT;
+		return this.port;
 	}
 	  
 	public String getUser() {
-	    return this.USER;
+	    return this.user;
 	}
 	  
 	public String getChannel() {
-	    return this.CHANNEL;
+	    return this.channel;
 	}
 	  
 	public String getOAuth() {
-	    return this.OAUTH;
+	    return this.oauth;
 	}
 	
 	public boolean isDemocracy() {
-	    return this.DEMOCRACY;
+	    return this.democracy;
 	}
 	  
-	public void setServer(String s) {
-		this.SERVER = s;
+	public void setServer(String server) {
+		this.server = server;
 	}
 	  
-	public void setPort(int p) {
-		this.PORT = p;
+	public void setPort(int port) {
+		this.port = port;
 	}
 	  
-	public void setUser(String u) {
-		this.USER = u;
+	public void setUser(String user) {
+		this.user = user;
 	}
 	  
-	public void setChannel(String c) {
-		this.CHANNEL = c;
+	public void setChannel(String channel) {
+		this.channel = channel;
 	}
 	  
-	public void setOAuth(String o) {
-		this.OAUTH = o;
+	public void setOAuth(String oauth) {
+		this.oauth = oauth;
 	}
 	
-	public void setDemocracy(boolean b) {
-		this.DEMOCRACY = b;
+	public void setDemocracy(boolean democracy) {
+		this.democracy = democracy;
 	}
 
 }
