@@ -6,13 +6,14 @@ public class Channel implements Serializable {
 	
 	private static final long serialVersionUID = -8374238202673046429L;
 
-	public Channel(String server, int port, String user, String channel, String oauth, boolean democracy) {
+	public Channel(String server, int port, String user, String channel, String oauth, boolean democracy, String image) {
 		this.server = server;
 		this.port = port;
 		this.user = user;
 		this.channel = channel;
 		this.oauth = oauth;
 		this.democracy = democracy;
+		this.image = image;
 	}
 
 	private String server;
@@ -21,6 +22,7 @@ public class Channel implements Serializable {
 	private String channel;
 	private String oauth;
 	private boolean democracy;
+	private String image;
 	  
 	public String getServer() {
 		return this.server;
@@ -45,6 +47,10 @@ public class Channel implements Serializable {
 	public boolean isDemocracy() {
 	    return this.democracy;
 	}
+	
+	public String getImage() {
+	    return this.image;
+	}
 	  
 	public void setServer(String server) {
 		this.server = server;
@@ -68,6 +74,10 @@ public class Channel implements Serializable {
 	
 	public void setDemocracy(boolean democracy) {
 		this.democracy = democracy;
+	}
+	
+	public void setImage(String url) {
+		this.image = url;
 	}
 
 }

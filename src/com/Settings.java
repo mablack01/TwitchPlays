@@ -45,6 +45,7 @@ public class Settings extends JFrame {
 	private JTextField user;
 	private JTextField channel;
 	private JTextField oauth;
+	private JTextField broadcastImage;
 	
 	private static Channel twitch;
 	private static Settings frame = new Settings();
@@ -134,14 +135,17 @@ public class Settings extends JFrame {
 		
 		JButton btnCreateSettings = new JButton("Save Settings");
 		btnCreateSettings.setAction(saveProfile);
+		
+		JLabel lblBroadcastImageurl = new JLabel("Broadcast Image (URL):");
+		
+		broadcastImage = new JTextField();
+		broadcastImage.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblEnterUser)
-						.addComponent(user, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblEnterChannel)
 						.addComponent(channel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
@@ -150,9 +154,12 @@ public class Settings extends JFrame {
 								.addComponent(port, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(server, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblNewLabel)
-								.addComponent(btnFindOauth))
+								.addComponent(btnFindOauth)
+								.addComponent(lblEnterUser)
+								.addComponent(user, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addGap(23)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(lblBroadcastImageurl)
 								.addGroup(groupLayout.createSequentialGroup()
 									.addComponent(btnCreateSettings)
 									.addPreferredGap(ComponentPlacement.RELATED)
@@ -166,8 +173,9 @@ public class Settings extends JFrame {
 									.addComponent(rdbtnDemocracy)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
 									.addComponent(rdbtnAnarchy)
-									.addPreferredGap(ComponentPlacement.RELATED)))))
-					.addContainerGap(63, Short.MAX_VALUE))
+									.addPreferredGap(ComponentPlacement.RELATED))
+								.addComponent(broadcastImage))))
+					.addContainerGap(76, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -190,9 +198,13 @@ public class Settings extends JFrame {
 						.addComponent(rdbtnDemocracy)
 						.addComponent(rdbtnAnarchy))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(lblEnterUser)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblEnterUser)
+						.addComponent(lblBroadcastImageurl))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(user, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(user, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(broadcastImage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblEnterChannel)
 					.addPreferredGap(ComponentPlacement.RELATED)
@@ -203,7 +215,7 @@ public class Settings extends JFrame {
 						.addComponent(btnCreateSettings)
 						.addComponent(btnSaveSettings)
 						.addComponent(btnLoadSettings))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addContainerGap(31, Short.MAX_VALUE))
 		);
 		getContentPane().setLayout(groupLayout);
 	}
@@ -246,7 +258,7 @@ public class Settings extends JFrame {
 		
 		public void actionPerformed(ActionEvent e) {
 			try {
-				Channel c = new Channel(server.getText(), Integer.parseInt(port.getText()), user.getText(), channel.getText(), oauth.getText(), democracy);
+				Channel c = new Channel(server.getText(), Integer.parseInt(port.getText()), user.getText(), channel.getText(), oauth.getText(), democracy, broadcastImage.getText());
 				ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("profile.ser"));
 				out.writeObject(c);
 				out.close();
@@ -279,6 +291,7 @@ public class Settings extends JFrame {
 				user.setText(c.getUser());
 				channel.setText(c.getChannel());
 				oauth.setText(c.getOAuth());
+				broadcastImage.setText(c.getImage());
 			} catch(Throwable e1) {
 				
 			}
@@ -300,7 +313,7 @@ public class Settings extends JFrame {
 		
 		public void actionPerformed(ActionEvent e) {
 			if (twitch == null) {
-				twitch = new Channel(server.getText(), Integer.parseInt(port.getText()), user.getText(), channel.getText(), oauth.getText(), democracy);
+				twitch = new Channel(server.getText(), Integer.parseInt(port.getText()), user.getText(), channel.getText(), oauth.getText(), democracy, broadcastImage.getText());
 			}
 			frame.setVisible(false);
 			Main gui = new Main();
@@ -350,5 +363,4 @@ public class Settings extends JFrame {
 		}
 		
 	}
-	
 }
