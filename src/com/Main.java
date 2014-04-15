@@ -1,6 +1,5 @@
 package com;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -8,19 +7,14 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-import javax.swing.SwingConstants;
-import javax.swing.JToolBar;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 import javax.swing.GroupLayout;
@@ -29,11 +23,14 @@ import javax.swing.GroupLayout.Alignment;
 import org.jibble.pircbot.IrcException;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JTextPane;
-import javax.swing.JList;
 
 public class Main extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5051468767236928741L;
+	
 	private JPanel contentPane;
 	public static IRC irc;
 	private static JLabel label;
@@ -123,6 +120,11 @@ public class Main extends JFrame {
 	
 	private class ChannelSettings extends AbstractAction {
 		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 7077225619368545524L;
+
 		public ChannelSettings() {
 			putValue(NAME, "Channel Settings");
 			putValue(SHORT_DESCRIPTION, "Adjust your twitch channel settings.");
@@ -138,6 +140,11 @@ public class Main extends JFrame {
 	
 	private class StartBot extends AbstractAction {
 		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -7226504713031519198L;
+
 		public StartBot() {
 			putValue(NAME, "Start");
 			putValue(SHORT_DESCRIPTION, "Start the IRC Bot!");

@@ -28,6 +28,11 @@ import java.net.URISyntaxException;
 
 import javax.swing.Action;
 
+/**
+ * @author Miles Black
+ * Handles the channel settings GUI
+ */
+
 public class Settings extends JFrame {
 	
 	/**

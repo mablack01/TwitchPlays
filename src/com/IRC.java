@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/*
+/**
  * @author Miles Black
  * Coding assistance used from https://github.com/Sidesplitter/TwitchPlays/
  * Handles the IRC Chat and Interpretation using PircBot
@@ -30,7 +30,7 @@ public class IRC extends PircBot {
     private Robot robot;
     private Channel channel = Settings.getChannel();
     
-    /*
+    /**
      * Default Constructor
      * Sets up the channel user
      */
@@ -44,7 +44,7 @@ public class IRC extends PircBot {
         }
     }
     
-    /*
+    /**
      * Initiates the connection with the channel
      */
 
@@ -58,7 +58,7 @@ public class IRC extends PircBot {
 	        Main.setStatus("Connected!");
 	}
     
-    /*
+    /**
      * Handles the disconnection of the client
      */
 
