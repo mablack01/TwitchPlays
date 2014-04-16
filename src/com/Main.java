@@ -1,6 +1,7 @@
 package com;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -15,8 +16,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import org.jibble.pircbot.IrcException;
 
@@ -28,15 +31,16 @@ public class Main extends JFrame implements ActionListener {
 	 * Fields
 	 */
 	public static IRC irc;
-	private JPanel contentPane;
+	private JPanel mainPane;
 	private static JButton startButton;
 	private static JLabel currentStatus;
 	private static JLabel statusLabel;
-	private static GroupLayout gl_contentPane;
+	private static GroupLayout gl_mainPane;
 	private static Main frame = new Main();
 	private Channel channel = Settings.getChannel();
 	
 	private static String status;
+	public static JTable table;
 	
 	/**
 	 * Gets the current status of the bot
@@ -88,40 +92,87 @@ public class Main extends JFrame implements ActionListener {
 		channelSettingsMenu.addActionListener(this);
 		channelSettingsMenu.setActionCommand("channelSettings");
 		
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		mainPane = new JPanel();
+		mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(mainPane);
 		
 		startButton = new JButton("Start");
+		startButton.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
 		startButton.addActionListener(this);
 		startButton.setActionCommand("startBot");
 		
-		statusLabel = new JLabel("Status:");
+		statusLabel = new JLabel("Current Status:");
+		statusLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
 		currentStatus = new JLabel(status);
+		currentStatus.setFont(new Font("Tahoma", Font.BOLD, 15));
 		
-		gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(41)
-					.addComponent(statusLabel)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(currentStatus)
-					.addGap(52)
-					.addComponent(startButton, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(239, Short.MAX_VALUE))
+		JLabel chatFeedLabel = new JLabel("Chat Feed");
+		chatFeedLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
+		
+		table = new JTable();
+		table.setShowGrid(false);
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+			},
+			new String[] {
+				"User", "Action"
+			}
+		));
+		
+		gl_mainPane = new GroupLayout(mainPane);
+		gl_mainPane.setHorizontalGroup(
+			gl_mainPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_mainPane.createSequentialGroup()
+					.addGroup(gl_mainPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_mainPane.createSequentialGroup()
+							.addGap(48)
+							.addComponent(chatFeedLabel))
+						.addGroup(gl_mainPane.createSequentialGroup()
+							.addGap(19)
+							.addComponent(table, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
+							.addGap(31)
+							.addGroup(gl_mainPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(statusLabel)
+								.addComponent(currentStatus)))
+						.addGroup(gl_mainPane.createSequentialGroup()
+							.addGap(32)
+							.addComponent(startButton, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(250, Short.MAX_VALUE))
 		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap(457, Short.MAX_VALUE)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(startButton, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
-						.addComponent(statusLabel)
-						.addComponent(currentStatus))
-					.addGap(25))
+		gl_mainPane.setVerticalGroup(
+			gl_mainPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_mainPane.createSequentialGroup()
+					.addGroup(gl_mainPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_mainPane.createSequentialGroup()
+							.addGap(13)
+							.addComponent(chatFeedLabel)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(table, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_mainPane.createSequentialGroup()
+							.addGap(67)
+							.addComponent(statusLabel)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(currentStatus)))
+					.addGap(18)
+					.addComponent(startButton, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(193, Short.MAX_VALUE))
 		);
-		contentPane.setLayout(gl_contentPane);
+		mainPane.setLayout(gl_mainPane);
 		setStatus("Idle...");
 	}
 	
@@ -155,5 +206,4 @@ public class Main extends JFrame implements ActionListener {
             thread.start();
 		}
 	}
-	
 }
