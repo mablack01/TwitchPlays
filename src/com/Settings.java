@@ -1,23 +1,9 @@
 package com;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JRadioButton;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-
 import java.awt.Desktop;
-
-import javax.swing.JLabel;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.ButtonGroup;
-import javax.swing.AbstractAction;
-
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,45 +12,50 @@ import java.io.ObjectOutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import javax.swing.Action;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 /**
+ * Settings class, handles the channel settings frame
  * @author Miles Black
- * Handles the channel settings GUI
+ * April 14, 2014
  */
 
-public class Settings extends JFrame {
+public class Settings extends JFrame implements ActionListener {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5600496626447407945L;
 	
-	private JTextField port;
-	private JTextField server;
-	private JTextField user;
-	private JTextField channel;
-	private JTextField oauth;
-	private JTextField broadcastImage;
+	/**
+	 * Fields
+	 */
+	private JTextField portText;
+	private JTextField serverText;
+	private JTextField userText;
+	private JTextField channelText;
+	private JTextField oAuthText;
+	private JTextField imageText;
 	
 	private static Channel twitch;
 	private static Settings frame = new Settings();
-	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private final Action grabAuth = new oAuth();
-	private final Action saveProfile = new SaveProfile();
-	private final Action loadProfile = new LoadProfile();
-	private final Action exit = new Exit();
-	private final Action democracyMode = new DemocracyMode();
-	private final Action anarchyMode = new AnarchyMode();
 	
 	private static boolean democracy;
 	
+	/**
+	 * Accesses the twitch channel
+	 * @return The twitch channel information used by the bot
+	 */
 	public static Channel getChannel() {
 		return twitch;
 	}
 
 	/**
-	 * Launch the application.
+	 * Launches the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -79,7 +70,7 @@ public class Settings extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Creates the main frame.
 	 */
 	public Settings() {
 		setAutoRequestFocus(false);
@@ -87,94 +78,93 @@ public class Settings extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 445, 310);
 		
-		JLabel lblEnterPort = new JLabel("Enter Port:");
+		JLabel portLabel = new JLabel("Enter Port:");
+		portText = new JTextField();
+		portText.setText("6667");
+		portText.setColumns(10);
 		
-		port = new JTextField();
-		port.setText("6667");
-		port.setColumns(10);
+		JLabel serverLabel = new JLabel("Enter Server:");
+		serverText = new JTextField();
+		serverText.setText("irc.twitch.tv");
+		serverText.setColumns(10);
 		
-		JLabel lblNewLabel = new JLabel("Enter Server:");
+		JLabel userLabel = new JLabel("Enter User:");
+		userText = new JTextField();
+		userText.setColumns(10);
 		
-		server = new JTextField();
-		server.setText("irc.twitch.tv");
-		server.setColumns(10);
+		JLabel channelLabel = new JLabel("Enter Channel");
+		channelText = new JTextField();
+		channelText.setColumns(10);
 		
-		JLabel lblEnterUser = new JLabel("Enter User:");
+		JLabel oAuthLabel = new JLabel("Enter oAuth");
+		oAuthText = new JTextField();
+		oAuthText.setColumns(10);
 		
-		user = new JTextField();
-		user.setColumns(10);
+		JButton findOAuth = new JButton("Find oAuth");
+		findOAuth.addActionListener(this);
+		findOAuth.setActionCommand("grabOAuth");
 		
-		JLabel lblEnterChannel = new JLabel("Enter Channel");
+		JRadioButton democracyButton = new JRadioButton("Democracy");
+		democracyButton.addActionListener(this);
+		democracyButton.setActionCommand("democracyMode");
 		
-		channel = new JTextField();
-		channel.setColumns(10);
+		JRadioButton anarchyButton = new JRadioButton("Anarchy");
+		anarchyButton.addActionListener(this);
+		anarchyButton.setActionCommand("anarchyMode");
 		
-		JLabel lblEnterOauth = new JLabel("Enter oAuth");
+		JLabel gameModeLabel = new JLabel("Chose a Game Mode:");
 		
-		oauth = new JTextField();
-		oauth.setColumns(10);
+		JButton loadSettings = new JButton("Load Settings");
+		loadSettings.addActionListener(this);
+		loadSettings.setActionCommand("loadProfile");
 		
-		JButton btnFindOauth = new JButton("Find oAuth");
-		btnFindOauth.setAction(grabAuth);
+		JButton exitButton = new JButton("Exit");
+		exitButton.addActionListener(this);
+		exitButton.setActionCommand("exit");
 		
-		JRadioButton rdbtnDemocracy = new JRadioButton("Democracy");
-		rdbtnDemocracy.setAction(democracyMode);
-		buttonGroup.add(rdbtnDemocracy);
+		JButton saveSettings = new JButton("Save Settings");
+		saveSettings.addActionListener(this);
+		saveSettings.setActionCommand("saveProfile");
 		
-		JRadioButton rdbtnAnarchy = new JRadioButton("Anarchy");
-		rdbtnAnarchy.setAction(anarchyMode);
-		buttonGroup.add(rdbtnAnarchy);
+		JLabel imageLabel = new JLabel("Broadcast Image (URL):");
+		imageText = new JTextField();
+		imageText.setColumns(10);
 		
-		JLabel lblChoseAGame = new JLabel("Chose a Game Mode:");
-		
-		JButton btnSaveSettings = new JButton("Load Settings");
-		btnSaveSettings.setAction(loadProfile);
-		
-		JButton btnLoadSettings = new JButton("Exit");
-		btnLoadSettings.setAction(exit);
-		
-		JButton btnCreateSettings = new JButton("Save Settings");
-		btnCreateSettings.setAction(saveProfile);
-		
-		JLabel lblBroadcastImageurl = new JLabel("Broadcast Image (URL):");
-		
-		broadcastImage = new JTextField();
-		broadcastImage.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblEnterChannel)
-						.addComponent(channel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(channelLabel)
+						.addComponent(channelText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblEnterPort)
-								.addComponent(port, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(server, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblNewLabel)
-								.addComponent(btnFindOauth)
-								.addComponent(lblEnterUser)
-								.addComponent(user, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addComponent(portLabel)
+								.addComponent(portText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(serverText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(serverLabel)
+								.addComponent(findOAuth)
+								.addComponent(userLabel)
+								.addComponent(userText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addGap(23)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(lblBroadcastImageurl)
+								.addComponent(imageLabel)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(btnCreateSettings)
+									.addComponent(saveSettings)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(btnSaveSettings)
+									.addComponent(loadSettings)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(btnLoadSettings))
-								.addComponent(lblEnterOauth)
-								.addComponent(lblChoseAGame)
-								.addComponent(oauth)
+									.addComponent(exitButton))
+								.addComponent(oAuthLabel)
+								.addComponent(gameModeLabel)
+								.addComponent(oAuthText)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(rdbtnDemocracy)
+									.addComponent(democracyButton)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(rdbtnAnarchy)
+									.addComponent(anarchyButton)
 									.addPreferredGap(ComponentPlacement.RELATED))
-								.addComponent(broadcastImage))))
+								.addComponent(imageText))))
 					.addContainerGap(76, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
@@ -182,185 +172,98 @@ public class Settings extends JFrame {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblEnterPort)
-						.addComponent(lblEnterOauth))
+						.addComponent(portLabel)
+						.addComponent(oAuthLabel))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(port, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(oauth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(portText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(oAuthText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel)
-						.addComponent(lblChoseAGame))
+						.addComponent(serverLabel)
+						.addComponent(gameModeLabel))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(server, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(rdbtnDemocracy)
-						.addComponent(rdbtnAnarchy))
+						.addComponent(serverText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(democracyButton)
+						.addComponent(anarchyButton))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblEnterUser)
-						.addComponent(lblBroadcastImageurl))
+						.addComponent(userLabel)
+						.addComponent(imageLabel))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(user, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(broadcastImage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(userText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(imageText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(lblEnterChannel)
+					.addComponent(channelLabel)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(channel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(channelText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnFindOauth)
-						.addComponent(btnCreateSettings)
-						.addComponent(btnSaveSettings)
-						.addComponent(btnLoadSettings))
+						.addComponent(findOAuth)
+						.addComponent(saveSettings)
+						.addComponent(loadSettings)
+						.addComponent(exitButton))
 					.addContainerGap(31, Short.MAX_VALUE))
 		);
 		getContentPane().setLayout(groupLayout);
 	}
 	
-	private class oAuth extends AbstractAction {
-		
-		private static final long serialVersionUID = -6317472743755430650L;
-
-		public oAuth() {
-			putValue(NAME, "Grab oAuth");
-			putValue(SHORT_DESCRIPTION, "Retrieves your oAuth used for your channel settings.");
-		}
-		
-		public void actionPerformed(ActionEvent e) {
+	/**
+	 * Handles the actions performed in the main frame.
+	 */
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("grabOAuth")) {
 			 Desktop d = Desktop.getDesktop();
 			 try {
 				d.browse(new URI("http://twitchapps.com/tmi/"));
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			} catch (URISyntaxException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		}
-		
-	}
-	
-	private class SaveProfile extends AbstractAction {
-		
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 6302203154105704959L;
-
-		public SaveProfile() {
-			putValue(NAME, "Save Profile");
-			putValue(SHORT_DESCRIPTION, "Saves your channel profile to profile.ser");
-		}
-		
-		public void actionPerformed(ActionEvent e) {
+		} else if (e.getActionCommand().equals("saveProfile")) {
 			try {
-				Channel c = new Channel(server.getText(), Integer.parseInt(port.getText()), user.getText(), channel.getText(), oauth.getText(), democracy, broadcastImage.getText());
+				Channel c = new Channel(serverText.getText(), Integer.parseInt(portText.getText()), userText.getText(), channelText.getText(), oAuthText.getText(), democracy, imageText.getText());
 				ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("profile.ser"));
 				out.writeObject(c);
 				out.close();
 			} catch(Throwable e1) {
-				
+				e1.printStackTrace();
 			}
-		}
-		
-	}
-	
-	private class LoadProfile extends AbstractAction {
-		
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 4590669890416091725L;
-
-		public LoadProfile() {
-			putValue(NAME, "Load Profile");
-			putValue(SHORT_DESCRIPTION, "Loads the information from profile.ser");
-		}
-		
-		public void actionPerformed(ActionEvent e) {
+		} else if (e.getActionCommand().equals("loadProfile")) {
 			try {
 				ObjectInputStream in = new ObjectInputStream(new FileInputStream("profile.ser"));
 				Channel c = (Channel) in.readObject();
 				in.close();
-				port.setText(Integer.toString(c.getPort()));
-				server.setText(c.getServer());
-				user.setText(c.getUser());
-				channel.setText(c.getChannel());
-				oauth.setText(c.getOAuth());
-				broadcastImage.setText(c.getImage());
+				portText.setText(Integer.toString(c.getPort()));
+				serverText.setText(c.getServer());
+				userText.setText(c.getUser());
+				channelText.setText(c.getChannel());
+				oAuthText.setText(c.getOAuth());
+				imageText.setText(c.getImage());
 			} catch(Throwable e1) {
-				
+				e1.printStackTrace();
 			}
-		}
-		
-	}
-	
-	private class Exit extends AbstractAction {
-		
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 2059988636808683931L;
-
-		public Exit() {
-			putValue(NAME, "Exit");
-			putValue(SHORT_DESCRIPTION, "Save and exit your channel data.");
-		}
-		
-		public void actionPerformed(ActionEvent e) {
+		} else if (e.getActionCommand().equals("exit")) {
 			if (twitch == null) {
-				twitch = new Channel(server.getText(), Integer.parseInt(port.getText()), user.getText(), channel.getText(), oauth.getText(), democracy, broadcastImage.getText());
+				twitch = new Channel(serverText.getText(), Integer.parseInt(portText.getText()), userText.getText(), channelText.getText(), oAuthText.getText(), democracy, imageText.getText());
+			} else {
+				twitch.setPort(Integer.parseInt(portText.getText()));
+				twitch.setServer(serverText.getText());
+				twitch.setUser(userText.getText());
+				twitch.setChannel(channelText.getText());
+				twitch.setOAuth(oAuthText.getText());
+				twitch.setDemocracy(democracy);
 			}
 			frame.setVisible(false);
 			Main gui = new Main();
 		    gui.setVisible(true);
-			twitch.setPort(Integer.parseInt(port.getText()));
-			twitch.setServer(server.getText());
-			twitch.setUser(user.getText());
-			twitch.setChannel(channel.getText());
-			twitch.setOAuth(oauth.getText());
-			twitch.setDemocracy(democracy);
-		}
-		
-	}
-	
-	private class DemocracyMode extends AbstractAction {
-		
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -1462165668825952617L;
-
-		public DemocracyMode() {
-			putValue(NAME, "Democracy");
-			putValue(SHORT_DESCRIPTION, "Chose the game mode Democracy.");
-		}
-		
-		public void actionPerformed(ActionEvent e) {
+		} else if (e.getActionCommand().equals("democracyMode")) {
 			democracy = true;
-		}
-		
-	}
-	
-	private class AnarchyMode extends AbstractAction {
-		
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 9199147910725275622L;
-
-		public AnarchyMode() {
-			putValue(NAME, "Anarchy");
-			putValue(SHORT_DESCRIPTION, "Chose the game mode Anarchy.");
-		}
-		
-		public void actionPerformed(ActionEvent e) {
+		} else if (e.getActionCommand().equals("anarchyMode")) {
 			democracy = false;
 		}
-		
 	}
 }
