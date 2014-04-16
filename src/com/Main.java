@@ -1,59 +1,62 @@
 package com;
 
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
-
 import java.awt.event.ActionEvent;
-
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JMenu;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
 
 import org.jibble.pircbot.IrcException;
-import javax.swing.JLabel;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
-public class Main extends JFrame {
+public class Main extends JFrame implements ActionListener {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5051468767236928741L;
 	
-	private JPanel contentPane;
+	/**
+	 * Fields
+	 */
 	public static IRC irc;
-	private static JLabel label;
-	private static JButton btnNewButton;
+	private JPanel contentPane;
+	private static JButton startButton;
+	private static JLabel currentStatus;
+	private static JLabel statusLabel;
 	private static GroupLayout gl_contentPane;
-	private static JLabel lblStatus;
 	private static Main frame = new Main();
-	private final Action channelSettings = new ChannelSettings();
-	private final Action startBot = new StartBot();
+	private Channel channel = Settings.getChannel();
 	
 	private static String status;
 	
+	/**
+	 * Gets the current status of the bot
+	 * @return status of the bot
+	 */
 	public static String getStatus() {
 		return status;
 	}
 	
+	/**
+	 * Sets the current status of the bot
+	 * @param s The status that is being set
+	 */
 	public static void setStatus(String s) {
 		status = s;
-		label.setText(status);
+		currentStatus.setText(status);
 	}
 
 	/**
-	 * Launch the application.
+	 * Launches the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -68,7 +71,7 @@ public class Main extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Creates the main frame.
 	 */
 	public Main() {
 		setTitle("Twitch Plays Client by Miles Black");
@@ -77,31 +80,35 @@ public class Main extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenu mnFile = new JMenu("File");
-		menuBar.add(mnFile);
+		JMenu fileMenu = new JMenu("File");
+		menuBar.add(fileMenu);
 		
-		JMenuItem mntmChannelSettings = new JMenuItem("Channel Settings");
-		mntmChannelSettings.setAction(channelSettings);
-		mnFile.add(mntmChannelSettings);
+		JMenuItem channelSettingsMenu = new JMenuItem("Channel Settings");
+		fileMenu.add(channelSettingsMenu);
+		channelSettingsMenu.addActionListener(this);
+		channelSettingsMenu.setActionCommand("channelSettings");
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		btnNewButton = new JButton("Start");
-		btnNewButton.setAction(startBot);
-		lblStatus = new JLabel("Status:");
+		startButton = new JButton("Start");
+		startButton.addActionListener(this);
+		startButton.setActionCommand("startBot");
 		
-		label = new JLabel(status);
+		statusLabel = new JLabel("Status:");
+		currentStatus = new JLabel(status);
+		
 		gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGap(41)
-					.addComponent(lblStatus)
+					.addComponent(statusLabel)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(label)
+					.addComponent(currentStatus)
 					.addGap(52)
-					.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+					.addComponent(startButton, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(239, Short.MAX_VALUE))
 		);
 		gl_contentPane.setVerticalGroup(
@@ -109,48 +116,29 @@ public class Main extends JFrame {
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap(457, Short.MAX_VALUE)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblStatus)
-						.addComponent(label))
+						.addComponent(startButton, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
+						.addComponent(statusLabel)
+						.addComponent(currentStatus))
 					.addGap(25))
 		);
 		contentPane.setLayout(gl_contentPane);
 		setStatus("Idle...");
 	}
 	
-	private class ChannelSettings extends AbstractAction {
-		
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 7077225619368545524L;
-
-		public ChannelSettings() {
-			putValue(NAME, "Channel Settings");
-			putValue(SHORT_DESCRIPTION, "Adjust your twitch channel settings.");
-		}
-		
-		public void actionPerformed(ActionEvent e) {
+	/**
+	 * Handles the actions performed in the main frame.
+	 */
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("channelSettings")) {
 			frame.setVisible(false);
 			Settings s = new Settings();
 		    s.setVisible(true);
-		}
-		
-	}
-	
-	private class StartBot extends AbstractAction {
-		
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -7226504713031519198L;
-
-		public StartBot() {
-			putValue(NAME, "Start");
-			putValue(SHORT_DESCRIPTION, "Start the IRC Bot!");
-		}
-		
-		public void actionPerformed(ActionEvent e) {
+		} else if (e.getActionCommand().equals("startBot")) {
+			if (channel == null || channel.getChannel() == null || channel.getImage() == null || channel.getOAuth() == null
+					|| channel.getPort() <= 0 || channel.getServer() == null || channel.getUser() == null) {
+				JOptionPane.showMessageDialog(frame, "Please fill in all of your channel information!");
+				return;
+			}
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -164,8 +152,8 @@ public class Main extends JFrame {
                     }
                 }
             });
-
             thread.start();
 		}
 	}
+	
 }
