@@ -79,7 +79,7 @@ public class IRC extends PircBot {
     public void onMessage(String channel, final String sender, String login, String hostname, final String message) {
         //Main.table.
     	for (int i = 0; i < keys.length; i++) {
-    		if (keys[i][0].contains(message)) {
+    		if (keys[i][0].equalsIgnoreCase(message)) {
     			Main.inputFeed.append(sender + " " + message + "\n");
     			this.pressKey(keys[i][1]);
     		}

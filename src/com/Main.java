@@ -36,12 +36,12 @@ public class Main extends JFrame implements ActionListener {
 	private static JButton startButton;
 	private static JLabel currentStatus;
 	private static JLabel statusLabel;
-	private JScrollPane inputFeedWrapper;
 	public static JTextArea inputFeed = new JTextArea();
 	private static GroupLayout gl_mainPane;
 	private static Main frame = new Main();
 	
 	private static String status;
+	private JScrollPane scrollPane;
 	
 	/**
 	 * Gets the current status of the bot
@@ -111,11 +111,9 @@ public class Main extends JFrame implements ActionListener {
 		chatFeedLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
 		
 		inputFeed = new JTextArea();
-		inputFeedWrapper = new JScrollPane(inputFeed);
-		inputFeed.setEditable(true);
-        inputFeed.setLineWrap(true);
-        inputFeed.setEditable(false);
-        inputFeedWrapper.setWheelScrollingEnabled(true);
+		
+		scrollPane = new JScrollPane(inputFeed);
+		scrollPane.setViewportView(inputFeed);
 		
 		gl_mainPane = new GroupLayout(mainPane);
 		gl_mainPane.setHorizontalGroup(
@@ -125,17 +123,18 @@ public class Main extends JFrame implements ActionListener {
 						.addGroup(gl_mainPane.createSequentialGroup()
 							.addContainerGap()
 							.addComponent(inputFeed, GroupLayout.PREFERRED_SIZE, 223, GroupLayout.PREFERRED_SIZE)
-							.addGap(27)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_mainPane.createParallelGroup(Alignment.LEADING)
 								.addComponent(currentStatus)
-								.addComponent(statusLabel)))
+								.addComponent(statusLabel)
+								.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 						.addGroup(gl_mainPane.createSequentialGroup()
 							.addGap(38)
 							.addComponent(startButton, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_mainPane.createSequentialGroup()
 							.addGap(50)
 							.addComponent(chatFeedLabel)))
-					.addContainerGap(235, Short.MAX_VALUE))
+					.addContainerGap(258, Short.MAX_VALUE))
 		);
 		gl_mainPane.setVerticalGroup(
 			gl_mainPane.createParallelGroup(Alignment.LEADING)
@@ -144,8 +143,13 @@ public class Main extends JFrame implements ActionListener {
 						.addGroup(gl_mainPane.createSequentialGroup()
 							.addGap(8)
 							.addComponent(chatFeedLabel)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(inputFeed, GroupLayout.PREFERRED_SIZE, 258, GroupLayout.PREFERRED_SIZE))
+							.addGroup(gl_mainPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_mainPane.createSequentialGroup()
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(inputFeed, GroupLayout.PREFERRED_SIZE, 258, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_mainPane.createSequentialGroup()
+									.addGap(77)
+									.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
 						.addGroup(gl_mainPane.createSequentialGroup()
 							.addGap(60)
 							.addComponent(statusLabel)
@@ -153,7 +157,7 @@ public class Main extends JFrame implements ActionListener {
 							.addComponent(currentStatus)))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(startButton, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(182, Short.MAX_VALUE))
+					.addContainerGap(183, Short.MAX_VALUE))
 		);
 		mainPane.setLayout(gl_mainPane);
 		setStatus("Idle...");
