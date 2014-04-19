@@ -34,7 +34,7 @@ public class IRC extends PircBot {
 	 * Fields
 	 */
     private Robot robot;
-    private Channel channel = Settings.getChannel();
+    private Channel twitch = Settings.getChannel();
     
     /**
      * Default Constructor
@@ -42,7 +42,7 @@ public class IRC extends PircBot {
      */
 
     public IRC(){
-        this.setName(channel.getUser());
+        this.setName(twitch.getUser());
         try {
             this.robot = new Robot();
         } catch (AWTException e) {
@@ -55,9 +55,9 @@ public class IRC extends PircBot {
      */
     public void start() throws IrcException, IOException {
 	    	Main.setStatus("Connecting to IRC...");
-	        this.connect(channel.getServer(), channel.getPort(), channel.getOAuth());
+	        this.connect(twitch.getServer(), twitch.getPort(), twitch.getOAuth());
 	        Main.setStatus("Joining the channel...");
-	        this.joinChannel("#" + channel.getChannel());
+	        this.joinChannel("#" + twitch.getChannel());
 	        Main.setStatus("Connected!");
 	}
     
@@ -77,11 +77,11 @@ public class IRC extends PircBot {
      * Reacts to the messages sent to the chat
      */
     public void onMessage(String channel, final String sender, String login, String hostname, final String message) {
-        //Main.table.
+        String[] input = message.split(" ");
     	for (int i = 0; i < keys.length; i++) {
-    		if (keys[i][0].contains(message)) {
+    		if (keys[i][0].equalsIgnoreCase(input[0])) {
     			Main.inputFeed.append(sender + " " + message + "\n");
-    			this.pressKey(keys[i][1]);
+    				this.pressKey(keys[i][1], twitch.isDemocracy() ? true : false, Integer.parseInt(input[1]));
     		}
     	}
     }
@@ -97,10 +97,17 @@ public class IRC extends PircBot {
     /**
      * Uses the robot to press the keys corresponding to the chat
      * @param key The button key that indicates the button to press
+     * @param democracy Indicates the if the game mode is democracy
+     * @param number The amount of times to press the button
      */
-    public void pressKey(String key){
+    public void pressKey(String key, boolean democracy, int number){
         try {
-            getRobot().keyPress((Integer) KeyEvent.class.getDeclaredField(key).get(null));
+        	if (democracy)
+        		getRobot().keyPress((Integer) KeyEvent.class.getDeclaredField(key).get(null));
+        	else {
+        		for (int i = 0; i < number; i++)
+        			getRobot().keyPress((Integer) KeyEvent.class.getDeclaredField(key).get(null));
+        	}
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (NoSuchFieldException e) {
