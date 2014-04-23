@@ -111,9 +111,14 @@ public class Main extends JFrame implements ActionListener {
 		chatFeedLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
 		
 		inputFeed = new JTextArea();
+		inputFeed.setLineWrap(true);
+	    inputFeed.setEditable(false);
+	    inputFeed.setVisible(true);
 		
-		scrollPane = new JScrollPane(inputFeed);
-		scrollPane.setViewportView(inputFeed);
+	    JScrollPane scroll = new JScrollPane (inputFeed);
+	    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	    mainPane.add(scroll);
+	    add(scroll);
 		
 		gl_mainPane = new GroupLayout(mainPane);
 		gl_mainPane.setHorizontalGroup(
@@ -126,8 +131,7 @@ public class Main extends JFrame implements ActionListener {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_mainPane.createParallelGroup(Alignment.LEADING)
 								.addComponent(currentStatus)
-								.addComponent(statusLabel)
-								.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(statusLabel)))
 						.addGroup(gl_mainPane.createSequentialGroup()
 							.addGap(38)
 							.addComponent(startButton, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE))
@@ -148,8 +152,7 @@ public class Main extends JFrame implements ActionListener {
 									.addPreferredGap(ComponentPlacement.UNRELATED)
 									.addComponent(inputFeed, GroupLayout.PREFERRED_SIZE, 258, GroupLayout.PREFERRED_SIZE))
 								.addGroup(gl_mainPane.createSequentialGroup()
-									.addGap(77)
-									.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+									.addGap(77))))
 						.addGroup(gl_mainPane.createSequentialGroup()
 							.addGap(60)
 							.addComponent(statusLabel)
