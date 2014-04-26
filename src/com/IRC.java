@@ -79,16 +79,17 @@ public class IRC extends PircBot {
     /**
      * Reacts to the messages sent to the chat
      */
-    public void onMessage(String channel, final String sender, String login, String hostname, final String message) {
+    @SuppressWarnings("unchecked")
+	public void onMessage(String channel, final String sender, String login, String hostname, final String message) {
         String[] input = message.split(" ");
         int amount = Integer.parseInt(input[1]);
     	for (int i = 0; i < keys.length; i++) {
-    		if (keys[i][0].equalsIgnoreCase(input[0])) {
+    		if (keys[i][0].equalsIgnoreCase(input[0]) || keys[i][0].equalsIgnoreCase(message)) {
     			if (twitch.isDemocracy()) {
-    				Main.inputFeed.append(sender + " " + input[0] + "\n");
+    				Main.listModel.addElement(sender + " " + input[0] + "\n");
     				this.pressKey(keys[i][1]);
     			} else if (amount > 0 && amount < 10) {
-    				Main.inputFeed.append(sender + " " + message + "\n");
+    				Main.listModel.addElement(sender + " " + message + "\n");
     				for (int j = 0; j <= amount; j++)
     					this.pressKey(keys[i][1]);
     			} else

@@ -4,10 +4,11 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.io.IOException;
 
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,10 +19,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import org.jibble.pircbot.IrcException;
+
+import javax.swing.JList;
 
 public class Main extends JFrame implements ActionListener {
 
@@ -36,12 +38,15 @@ public class Main extends JFrame implements ActionListener {
 	private static JButton startButton;
 	private static JLabel currentStatus;
 	private static JLabel statusLabel;
+	@SuppressWarnings("rawtypes")
+	public static JList inputList;
+	@SuppressWarnings("rawtypes")
+	public static DefaultListModel listModel;
+	public static JScrollPane messageScrollList;
 	public static JTextArea inputFeed = new JTextArea();
-	private static GroupLayout gl_mainPane;
 	private static Main frame = new Main();
 	
 	private static String status;
-	private JScrollPane scrollPane;
 	
 	/**
 	 * Gets the current status of the bot
@@ -78,10 +83,11 @@ public class Main extends JFrame implements ActionListener {
 	/**
 	 * Creates the main frame.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Main() {
 		setTitle("Twitch Plays Client by Miles Black");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 629, 626);
+		setBounds(100, 100, 504, 349);
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
@@ -93,77 +99,53 @@ public class Main extends JFrame implements ActionListener {
 		channelSettingsMenu.addActionListener(this);
 		channelSettingsMenu.setActionCommand("channelSettings");
 		
+		
 		mainPane = new JPanel();
 		mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(mainPane);
 		
 		startButton = new JButton("Start");
+		startButton.setBounds(187, 217, 162, 55);
 		startButton.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
 		startButton.addActionListener(this);
 		startButton.setActionCommand("startBot");
 		
 		statusLabel = new JLabel("Current Status:");
-		statusLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		statusLabel.setBounds(182, 28, 126, 28);
+		statusLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
 		currentStatus = new JLabel(status);
+		currentStatus.setBounds(182, 70, 299, 31);
 		currentStatus.setFont(new Font("Tahoma", Font.BOLD, 15));
 		
 		JLabel chatFeedLabel = new JLabel("Chat Feed");
+		chatFeedLabel.setBounds(27, 23, 126, 31);
 		chatFeedLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
 		
-		inputFeed = new JTextArea();
-		inputFeed.setLineWrap(true);
-	    inputFeed.setEditable(false);
-	    inputFeed.setVisible(true);
+		listModel = new DefaultListModel();
 		
-	    JScrollPane scroll = new JScrollPane (inputFeed);
-	    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-	    mainPane.add(scroll);
-	    add(scroll);
+		inputList = new JList(listModel);
+		inputList.setBounds(10, 62, 162, 210);
+		mainPane.add(inputList);
 		
-		gl_mainPane = new GroupLayout(mainPane);
-		gl_mainPane.setHorizontalGroup(
-			gl_mainPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_mainPane.createSequentialGroup()
-					.addGroup(gl_mainPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_mainPane.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(inputFeed, GroupLayout.PREFERRED_SIZE, 223, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_mainPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(currentStatus)
-								.addComponent(statusLabel)))
-						.addGroup(gl_mainPane.createSequentialGroup()
-							.addGap(38)
-							.addComponent(startButton, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_mainPane.createSequentialGroup()
-							.addGap(50)
-							.addComponent(chatFeedLabel)))
-					.addContainerGap(258, Short.MAX_VALUE))
-		);
-		gl_mainPane.setVerticalGroup(
-			gl_mainPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_mainPane.createSequentialGroup()
-					.addGroup(gl_mainPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_mainPane.createSequentialGroup()
-							.addGap(8)
-							.addComponent(chatFeedLabel)
-							.addGroup(gl_mainPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_mainPane.createSequentialGroup()
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(inputFeed, GroupLayout.PREFERRED_SIZE, 258, GroupLayout.PREFERRED_SIZE))
-								.addGroup(gl_mainPane.createSequentialGroup()
-									.addGap(77))))
-						.addGroup(gl_mainPane.createSequentialGroup()
-							.addGap(60)
-							.addComponent(statusLabel)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(currentStatus)))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(startButton, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(183, Short.MAX_VALUE))
-		);
-		mainPane.setLayout(gl_mainPane);
+		JScrollPane feedScroller = new JScrollPane(inputList);
+		feedScroller.setOpaque(false);
+		feedScroller.setBounds(10, 62, 162, 210);
+		feedScroller.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {  
+	        public void adjustmentValueChanged(AdjustmentEvent e) {  
+	            e.getAdjustable().setValue(e.getAdjustable().getMaximum());  
+	        }
+	    }); 
+		
+	    mainPane.setLayout(null);
+		mainPane.add(currentStatus);
+		mainPane.add(statusLabel);
+		mainPane.add(startButton);
+		mainPane.add(chatFeedLabel);
+		mainPane.add(inputList);
+		mainPane.add(feedScroller);
+		
 		setStatus("Idle...");
+		
 	}
 	
 	/**
