@@ -128,7 +128,6 @@ public class Main extends JFrame implements ActionListener {
 		mainPane.add(inputList);
 		
 		JScrollPane feedScroller = new JScrollPane(inputList);
-		feedScroller.setOpaque(false);
 		feedScroller.setBounds(10, 62, 162, 210);
 		feedScroller.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {  
 	        public void adjustmentValueChanged(AdjustmentEvent e) {  
@@ -141,7 +140,6 @@ public class Main extends JFrame implements ActionListener {
 		mainPane.add(statusLabel);
 		mainPane.add(startButton);
 		mainPane.add(chatFeedLabel);
-		mainPane.add(inputList);
 		mainPane.add(feedScroller);
 		
 		setStatus("Idle...");
