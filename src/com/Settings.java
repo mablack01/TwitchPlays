@@ -12,14 +12,11 @@ import java.io.ObjectOutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 /**
  * Settings class, handles the channel settings frame
@@ -79,135 +76,96 @@ public class Settings extends JFrame implements ActionListener {
 		setBounds(100, 100, 445, 310);
 		
 		JLabel portLabel = new JLabel("Enter Port:");
+		portLabel.setBounds(10, 11, 53, 14);
 		portText = new JTextField();
+		portText.setBounds(10, 31, 86, 20);
 		portText.setText("6667");
 		portText.setColumns(10);
 		
 		JLabel serverLabel = new JLabel("Enter Server:");
+		serverLabel.setBounds(10, 62, 65, 14);
 		serverText = new JTextField();
+		serverText.setBounds(10, 82, 86, 20);
 		serverText.setText("irc.twitch.tv");
 		serverText.setColumns(10);
 		
 		JLabel userLabel = new JLabel("Enter User:");
+		userLabel.setBounds(10, 113, 55, 14);
 		userText = new JTextField();
+		userText.setBounds(10, 133, 86, 20);
 		userText.setColumns(10);
 		
 		JLabel channelLabel = new JLabel("Enter Channel");
+		channelLabel.setBounds(10, 164, 68, 14);
 		channelText = new JTextField();
+		channelText.setBounds(10, 184, 86, 20);
 		channelText.setColumns(10);
 		
 		JLabel oAuthLabel = new JLabel("Enter oAuth");
+		oAuthLabel.setBounds(119, 11, 58, 14);
 		oAuthText = new JTextField();
+		oAuthText.setBounds(119, 31, 259, 20);
 		oAuthText.setColumns(10);
 		
 		JButton findOAuth = new JButton("Find oAuth");
+		findOAuth.setBounds(10, 222, 85, 23);
 		findOAuth.addActionListener(this);
 		findOAuth.setActionCommand("grabOAuth");
 		
 		JRadioButton democracyButton = new JRadioButton("Democracy");
+		democracyButton.setBounds(119, 81, 79, 23);
 		democracyButton.addActionListener(this);
 		democracyButton.setActionCommand("democracyMode");
 		
 		JRadioButton anarchyButton = new JRadioButton("Anarchy");
+		anarchyButton.setBounds(200, 81, 65, 23);
 		anarchyButton.addActionListener(this);
 		anarchyButton.setActionCommand("anarchyMode");
 		
 		JLabel gameModeLabel = new JLabel("Chose a Game Mode:");
+		gameModeLabel.setBounds(119, 62, 102, 14);
 		
 		JButton loadSettings = new JButton("Load Settings");
+		loadSettings.setBounds(224, 222, 97, 23);
 		loadSettings.addActionListener(this);
 		loadSettings.setActionCommand("loadProfile");
 		
 		JButton exitButton = new JButton("Exit");
+		exitButton.setBounds(327, 222, 51, 23);
 		exitButton.addActionListener(this);
 		exitButton.setActionCommand("exit");
 		
 		JButton saveSettings = new JButton("Save Settings");
+		saveSettings.setBounds(119, 222, 99, 23);
 		saveSettings.addActionListener(this);
 		saveSettings.setActionCommand("saveProfile");
 		
 		JLabel imageLabel = new JLabel("Broadcast Image (URL):");
+		imageLabel.setBounds(119, 113, 115, 14);
 		imageText = new JTextField();
+		imageText.setBounds(119, 133, 259, 20);
 		imageText.setColumns(10);
 		
-		GroupLayout groupLayout = new GroupLayout(getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(channelLabel)
-						.addComponent(channelText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(portLabel)
-								.addComponent(portText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(serverText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(serverLabel)
-								.addComponent(findOAuth)
-								.addComponent(userLabel)
-								.addComponent(userText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addGap(23)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(imageLabel)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(saveSettings)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(loadSettings)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(exitButton))
-								.addComponent(oAuthLabel)
-								.addComponent(gameModeLabel)
-								.addComponent(oAuthText)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(democracyButton)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(anarchyButton)
-									.addPreferredGap(ComponentPlacement.RELATED))
-								.addComponent(imageText))))
-					.addContainerGap(76, Short.MAX_VALUE))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(portLabel)
-						.addComponent(oAuthLabel))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(portText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(oAuthText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(serverLabel)
-						.addComponent(gameModeLabel))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(serverText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(democracyButton)
-						.addComponent(anarchyButton))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(userLabel)
-						.addComponent(imageLabel))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(userText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(imageText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(channelLabel)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(channelText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(findOAuth)
-						.addComponent(saveSettings)
-						.addComponent(loadSettings)
-						.addComponent(exitButton))
-					.addContainerGap(31, Short.MAX_VALUE))
-		);
-		getContentPane().setLayout(groupLayout);
+		getContentPane().setLayout(null);
+		getContentPane().add(channelLabel);
+		getContentPane().add(channelText);
+		getContentPane().add(portLabel);
+		getContentPane().add(portText);
+		getContentPane().add(serverText);
+		getContentPane().add(serverLabel);
+		getContentPane().add(findOAuth);
+		getContentPane().add(userLabel);
+		getContentPane().add(userText);
+		getContentPane().add(imageLabel);
+		getContentPane().add(saveSettings);
+		getContentPane().add(loadSettings);
+		getContentPane().add(exitButton);
+		getContentPane().add(oAuthLabel);
+		getContentPane().add(gameModeLabel);
+		getContentPane().add(oAuthText);
+		getContentPane().add(democracyButton);
+		getContentPane().add(anarchyButton);
+		getContentPane().add(imageText);
 	}
 	
 	/**
